@@ -1,91 +1,60 @@
 // src/data/mockGames.js
 
-/** 
+/**
  * mockGames.js
-
-## Folder Structure:
-- src/data/mockGames.js
-
-## Description:
-This file provides mock data for games, including their details like name, players, rating, and tags.
-
-## Variables Exported:
-- `games` (array): An array of game objects with the following properties:
-    - id (number)
-    - name (string)
-    - language (string)
-    - rating (number)
-    - lastplayed (string)
-    - minplayers (number)
-    - maxplayers (number)
-    - bggurl (string)
-    - imageurl (string)
-    - tag (string)
-    - category (array): List of categories the game belongs to
-    - owner (array): List of owners of the game
-
-## Variables Expected:
-- None.
-
-## Dependencies:
-- None.
-*/
+ *
+ * Description:
+ * Provides mock data for the initial games list with expanded fields to include detailed game information.
+ */
 
 export const games = [
     {
-        id: 0,
-        name: "Catan",
-        language: "English",
-        rating: 8.5,
-        lastplayed: "2023-10-15",
-        minplayers: 3,
-        maxplayers: 4,
-        bggurl: "https://boardgamegeek.com/boardgame/13/catan",
-        imageurl: "/assets/catan.jpg",
-        tag: "competitive",
-        category: ["Strategy", "Resource Management"],
-        owner: ["Alice", "Bob"],
+      id: "0",
+      name: "Catan",
+      language: "English",
+      personalRating: "8.5",
+      lastPlayed: "2023-10-15",
+      minPlayers: "3",
+      maxPlayers: "4",
+      bggUrl: "https://boardgamegeek.com/boardgame/13/catan",
+      imageUrl: "/assets/catan.jpg",
+      tag: "competitive",
+      description: "A game of trading and building.",
+      dutchDescription: "Een spel van handel en bouwen.",
+      categories: ["Strategy", "Resource Management"],
+      designer: "Klaus Teuber",
+      artist: "Michael Menzel",
+      publisher: "Kosmos",
+      expansions: [],
+      minPlaytime: "60",
+      maxPlaytime: "120",
+      averagePlaytime: "90",
+      bestWithXPlayers: "4",
+      categoryDescription: "A resource management strategy game.",
     },
     {
-        id: 1,
-        name: "Pandemic",
-        language: "English",
-        rating: 9.2,
-        lastplayed: "2023-12-01",
-        minplayers: 2,
-        maxplayers: 4,
-        bggurl: "https://boardgamegeek.com/boardgame/30549/pandemic",
-        imageurl: "/assets/pandemic.jpg",
-        tag: "cooperative",
-        category: ["Cooperative", "Strategy"],
-        owner: ["Alice"],
+      id: "1",
+      name: "Pandemic",
+      language: "English",
+      personalRating: "9.2",
+      lastPlayed: "2023-12-01",
+      minPlayers: "2",
+      maxPlayers: "4",
+      bggUrl: "https://boardgamegeek.com/boardgame/30549/pandemic",
+      imageUrl: "/assets/pandemic.jpg",
+      tag: "cooperative",
+      description: "A cooperative game about stopping diseases.",
+      dutchDescription: "Een coöperatief spel over het stoppen van ziektes.",
+      categories: ["Cooperative", "Strategy"],
+      designer: "Matt Leacock",
+      artist: "Chris Quilliams",
+      publisher: "Z-Man Games",
+      expansions: ["On the Brink", "In the Lab"],
+      minPlaytime: "45",
+      maxPlaytime: "60",
+      averagePlaytime: "50",
+      bestWithXPlayers: "4",
+      categoryDescription: "Work together to stop global outbreaks.",
     },
-    {
-        id: 2,
-        name: "Ticket to Ride",
-        language: "English",
-        rating: 8.0,
-        lastplayed: "2023-11-10",
-        minplayers: 2,
-        maxplayers: 5,
-        bggurl: "https://boardgamegeek.com/boardgame/9209/ticket-ride",
-        imageurl: "/assets/ttr.jpg",
-        tag: "competitive",
-        category: ["Family", "Railroad"],
-        owner: ["Charlie"],
-    },
-    {
-        id: 3,
-        name: "Ticket to Stride",
-        language: "English",
-        rating: 8.0,
-        lastplayed: "2023-11-10",
-        minplayers: 2,
-        maxplayers: 5,
-        bggurl: "https://boardgamegeek.com/boardgame/9209/ticket-ride",
-        imageurl: "https://t4.ftcdn.net/jpg/00/56/96/27/360_F_56962791_o8syVNM8Ojo19TxJhLy1JW6RPHOin2zS.jpg",
-        tag: "competitive",
-        category: ["Family", "Railroad"],
-        owner: ["Charlie"],
-    },
-];
+  ];
+  

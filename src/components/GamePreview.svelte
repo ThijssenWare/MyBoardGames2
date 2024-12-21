@@ -20,22 +20,20 @@ Outputs:
 -->
 
 <script>
-    import { games } from "../stores/games";
-
     export let newGame;
-    export let onResetForm; // Callback to reset the form
-    export let onSaveGame; // Callback to save the game
-
-    function saveGame() {
-        games.push(newGame);
-        onResetForm();
-        alert("Game added successfully!");
-    }
-</script>
-
-<div class="preview">
+    export let resetForm;
+    export let onSaveGame;
+  
+    const editDetails = () => {
+      newGame.editMode = true;
+    };
+  </script>
+  
+  <div class="preview">
     <h2>Preview</h2>
     <pre>{JSON.stringify(newGame, null, 2)}</pre>
-    <button on:click={() => onResetForm()}>Cancel</button>
-    <button on:click={() => saveGame()}>Save</button>
-</div>
+    <button on:click={resetForm}>Cancel</button>
+    <button on:click={editDetails}>Edit</button>
+    <button on:click={onSaveGame}>Save</button>
+  </div>
+  

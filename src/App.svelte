@@ -40,20 +40,27 @@ This is the root component of the application. It handles routing and dynamicall
 	let componentProps = {};
   
 	$: {
-	  if (route === "/") {
-		Component = Home;
-		componentProps = {};
-	  } else if (route.startsWith("/game-details/")) {
-		Component = GameDetails;
-		const gameId = route.split("/")[2]; // Extract the game ID
-		componentProps = { gameId };
-	  } else if (route === "/add-game") {
-		Component = AddGame;
-		componentProps = {};
-	  } else {
-		Component = null; // Handle 404
-	  }
-	}
+  switch (route) {
+    case "/":
+      Component = Home;
+      componentProps = {};
+      break;
+    case "/add-game":
+      Component = AddGame;
+      componentProps = {};
+      break;
+    default:
+      if (route.startsWith("/game-details/")) {
+        Component = GameDetails;
+        const gameId = route.split("/")[2]; // Extract the game ID
+        componentProps = { gameId };
+      } else {
+        Component = null; // Handle 404
+      }
+      break;
+  }
+}
+
   
 	// Function to navigate back to the Home page
 	const goHome = () => {

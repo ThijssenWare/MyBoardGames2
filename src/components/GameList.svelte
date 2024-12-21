@@ -29,7 +29,7 @@ This component renders a list of games based on the filtered games and user inpu
     import { get } from "svelte/store";
 
     // Fetch the games list from the store
-    let gamesList = get(games);
+    let gamesList = get(games); //should be dynamic: $: gamesList = $games; --> but then everything breaks 
 
     // Variables passed from the parent
     export let searchQuery = "";
