@@ -16,6 +16,11 @@ import { games as mockGames } from "../data/mockGames.js";
 
 export const games = writable(mockGames);
 
+// Debugging: Log the initial state
+games.subscribe(($games) => {
+  console.log("games store initialized:", $games); // Check for correct data structure
+});
+
 /**
  * For Backend:
  * Add functions like the following:

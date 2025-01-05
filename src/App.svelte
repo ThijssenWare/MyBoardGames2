@@ -29,38 +29,39 @@ This is the root component of the application. It handles routing and dynamicall
 	import AddGame from "./pages/AddGame.svelte";
   
 	let route = "/";
-  
+	
 	// Subscribe to route changes
-	$: currentRoute.subscribe((value) => {
-	  route = value;
-	});
-  
+	$: $currentRoute, route = $currentRoute;
+
+	$: console.log(route);
+
+	
 	// Dynamically determine which component to render
 	let Component;
 	let componentProps = {};
-  
+	
+	// Update component based on route
 	$: {
-  switch (route) {
-    case "/":
-      Component = Home;
-      componentProps = {};
-      break;
-    case "/add-game":
-      Component = AddGame;
-      componentProps = {};
-      break;
-    default:
-      if (route.startsWith("/game-details/")) {
-        Component = GameDetails;
-        const gameId = route.split("/")[2]; // Extract the game ID
-        componentProps = { gameId };
-      } else {
-        Component = null; // Handle 404
-      }
-      break;
-  }
-}
-
+	  switch (route) {
+		case "/":
+		  Component = Home;
+		  componentProps = {};
+		  break;
+		case "/add-game":
+		  Component = AddGame;
+		  componentProps = {};
+		  break;
+		default:
+		  if (route.startsWith("/game-details/")) {
+			Component = GameDetails;
+			const gameId = route.split("/")[2]; // Extract the game ID
+			componentProps = { gameId };
+		  } else {
+			Component = null; // Handle 404
+		  }
+		  break;
+	  }
+	}
   
 	// Function to navigate back to the Home page
 	const goHome = () => {
@@ -68,7 +69,6 @@ This is the root component of the application. It handles routing and dynamicall
 	};
   </script>
   
-  <!-- Conditional Rendering of Components -->
   {#if Component}
 	<svelte:component this={Component} {...componentProps} />
   {:else}

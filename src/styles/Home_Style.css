@@ -1,0 +1,24 @@
+
+
+:global(body) {
+    background-color: rgb(255, 255, 255);
+  }
+
+  :global(.container) {
+    display: flex;
+    background-color: #f9f9f9;
+    min-height: 100vh;
+    padding: 1rem;
+  }
+
+  :global(.filter) {
+    width: 25%;
+    background-color: #e3f7f7;
+    padding: 1rem;
+    border-right: 2px solid #ddd;
+  }
+
+  :global(.game-list) {
+    width: 75%;
+    padding: 1rem;
+  }

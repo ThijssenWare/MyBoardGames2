@@ -20,20 +20,26 @@ Outputs:
 -->
 
 <script>
-    export let newGame;
-    export let resetForm;
-    export let onSaveGame;
-  
-    const editDetails = () => {
-      newGame.editMode = true;
-    };
-  </script>
-  
-  <div class="preview">
-    <h2>Preview</h2>
-    <pre>{JSON.stringify(newGame, null, 2)}</pre>
-    <button on:click={resetForm}>Cancel</button>
-    <button on:click={editDetails}>Edit</button>
-    <button on:click={onSaveGame}>Save</button>
-  </div>
-  
+  import { createEventDispatcher } from "svelte";
+
+  export let newGame;
+  export let resetForm;
+
+  const dispatch = createEventDispatcher();
+
+  const editDetails = () => {
+    dispatch("editDetails"); // Emit an event for editing game details
+  };
+
+  const saveGame = () => {
+    dispatch("saveGame"); // Emit an event to save the game
+  };
+</script>
+
+<div class="preview">
+  <h2>Preview</h2>
+  <pre>{JSON.stringify(newGame, null, 2)}</pre>
+  <button on:click={resetForm}>Cancel</button>
+  <button on:click={editDetails}>Edit</button>
+  <button on:click={saveGame}>Save</button>
+</div>

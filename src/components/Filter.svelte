@@ -8,6 +8,7 @@
 -->
 
 <script>
+    import "../styles/Filter_Style.css"; // Import the styles
     import { categoryOptions } from '../data/categoryOptions'; // List of game categories
     import { loggedIn } from '../stores/auth'; // Authentication status store
     import { translations } from '../stores/translations'; // Translations store
@@ -62,6 +63,7 @@
 
     <!-- Number of Players Filter -->
     <div class="filter-group">
+        <!-- svelte-ignore a11y-label-has-associated-control -->
         <label>
             {t("numPlayers") || "Number of Players"}:
         </label>
@@ -87,6 +89,7 @@
     {#if showAdvancedFilters}
         <!-- Categories Filter -->
         <div class="filter-group">
+            <!-- svelte-ignore a11y-label-has-associated-control -->
             <label>{t("category") || "Categories"}:</label>
             <div class="categories">
                 {#each [...categoryOptions].sort((a, b) => a.localeCompare(b)) as category}
@@ -155,96 +158,4 @@
     {/if}
 </div>
 
-<!-- Component Styles -->
-<style>
-    /* General Filters Container */
-    .filters-container {
-        padding: 1.5rem;
-        background-color: #ffffff;
-        border-radius: 12px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        margin-bottom: 1rem;
-    }
 
-    .filter-title {
-        font-size: 1.75rem;
-        margin-bottom: 1rem;
-        color: #333;
-        text-align: center;
-    }
-
-    .filter-group {
-        margin-bottom: 1.5rem;
-    }
-
-    label {
-        font-weight: 600;
-        color: #444;
-        margin-bottom: 0.5rem;
-    }
-
-    /* Checkbox alignment */
-    .checkbox-group label {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        margin-bottom: 0.5rem;
-    }
-
-    /* Modern Slider */
-    .slider {
-        -webkit-appearance: none;
-        width: 100%;
-        height: 8px;
-        background: #e0e0e0;
-        border-radius: 5px;
-        outline: none;
-    }
-
-    .slider::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        width: 18px;
-        height: 18px;
-        background-color: #007bff;
-        border-radius: 50%;
-        cursor: pointer;
-        border: 2px solid #fff;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    }
-
-    .slider-value {
-        display: block;
-        margin-top: 0.5rem;
-        text-align: center;
-        font-size: 1rem;
-        color: #555;
-    }
-
-    /* Categories Grid */
-    .categories {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.5rem;
-    }
-
-    .category-item {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    /* Advanced Button */
-    .toggle-advanced {
-        background-color: #007bff;
-        color: white;
-        padding: 0.5rem 1rem;
-        text-align: center;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-    }
-
-    .toggle-advanced:hover {
-        background-color: #0056b3;
-    }
-</style>

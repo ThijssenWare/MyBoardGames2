@@ -22,6 +22,7 @@ Header.svelte
 -->
 
 <script>
+    import "../styles/Header_Style.css"; // Import the styles
     import { navigate } from "../stores/routes";
     import { loggedIn } from "../stores/auth"; 
     import { get } from "svelte/store"; 
@@ -69,6 +70,7 @@ Header.svelte
             {$loggedIn ? getTranslation("logout") : getTranslation("login")}
         </button>
         <nav>
+            <!-- svelte-ignore a11y-invalid-attribute -->
             <a href="#" on:click|preventDefault={() => navigate("/")}>{getTranslation("home")}</a>
         </nav>
     </div>
@@ -122,47 +124,3 @@ Header.svelte
     </div>
 </header>
 
-<style>
-    .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1rem;
-        background: turquoise;
-        color: white;
-    }
-    .header-left nav a {
-        margin-left: 1rem;
-        color: white;
-        text-decoration: none;
-    }
-    .header-right button {
-        background: darkyellow;
-        border: none;
-        color: black;
-        padding: 0.5rem;
-        cursor: pointer;
-    }
-    .header-right .dropdown {
-        position: absolute;
-        background: white;
-        color: black;
-        border: 1px solid turquoise;
-        padding: 0.5rem;
-        margin-top: 0.5rem;
-    }
-    .logged-in {
-        background-color: green;
-    }
-    .logged-out {
-        background-color: red;
-    }
-    .language-dropdown button {
-        display: flex;
-        align-items: center;
-        padding: 0.5rem;
-    }
-    .language-dropdown img {
-        margin-right: 8px;
-    }
-</style>

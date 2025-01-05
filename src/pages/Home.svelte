@@ -21,18 +21,18 @@ This page serves as the homepage and displays the list of games with filters and
 - `Header.svelte`: Renders the page header.
 - `Filter.svelte`: Renders the filter sidebar.
 - `GameList.svelte`: Displays the list of filtered games.
-- `data/mockGames.js`: Contains dummy game data.
-
 -->
-
-
 <script>
+  import "../styles/Home_Style.css"; // Import the styles
+  import { loggedIn } from "../stores/auth"; // Assuming you have a store for loggedIn status
   import Header from "../components/Header.svelte";
-  import Filter from "../components/Filter.svelte"; // Import the new Filter component
-  import GameList from "../components/GameList.svelte"; // Import the new GameList component
-  import { games } from "../data/mockGames"; // Import mock data
+  import Filter from "../components/Filter.svelte";
+  import GameList from "../components/GameList.svelte";
+  //import { games } from "../data/mockGames"; // Mock games data
 
-  let loggedIn = false;
+    // Debugging logs
+    console.log("Logged in status:", $loggedIn);
+
   let username = "";
   let householdName = "";
 
@@ -50,22 +50,6 @@ This page serves as the homepage and displays the list of games with filters and
   let sortBy = "name";
   let sortOrder = "asc";
   let searchQuery = "";
-
-  // Filtered and sorted games (derived state)
-  $: filteredGames = games
-    .filter((game) => {
-      return game.name.toLowerCase().includes(searchQuery.toLowerCase());
-    })
-    .sort((a, b) => {
-      if (sortBy === "name") {
-        return sortOrder === "asc"
-          ? a.name.localeCompare(b.name)
-          : b.name.localeCompare(a.name);
-      } else if (sortBy === "rating") {
-        return sortOrder === "asc" ? a.rating - b.rating : b.rating - a.rating;
-      }
-      return 0;
-    });
 </script>
 
 <Header {loggedIn} {username} {householdName} />
@@ -82,7 +66,6 @@ This page serves as the homepage and displays the list of games with filters and
       bind:searchQuery
       bind:sortBy
       bind:sortOrder
-      {filteredGames}
     />
   </main>
 </div>
@@ -91,18 +74,21 @@ This page serves as the homepage and displays the list of games with filters and
   :global(body) {
     background-color: rgb(255, 255, 255);
   }
+
   :global(.container) {
     display: flex;
     background-color: #f9f9f9;
     min-height: 100vh;
     padding: 1rem;
   }
+
   :global(.filter) {
     width: 25%;
     background-color: #e3f7f7;
     padding: 1rem;
     border-right: 2px solid #ddd;
   }
+
   :global(.game-list) {
     width: 75%;
     padding: 1rem;

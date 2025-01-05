@@ -28,156 +28,85 @@ This component displays detailed information about a specific game.
     import { loggedIn } from "../stores/auth";
     import Header from "../components/Header.svelte";
     import { get } from "svelte/store";
-
-    export let gameId;
-
+  
+    export let gameId; // Game ID passed as prop
+  
     // Reactive store values
     let isLoggedIn;
-    loggedIn.subscribe(value => isLoggedIn = value);
-
-    // Fetch the games list from the store
-    const gamesList = get(games);
-
-    // Find the specific game based on gameId
-    let game = gamesList.find((g) => g.id === parseInt(gameId)) || {
+    loggedIn.subscribe((value) => (isLoggedIn = value));
+  
+    // Find the game from the store
+    let game;
+    let gamesList = get(games);
+  
+    // Reactive updates for game when gameId changes
+    $: {
+      game = gamesList.find((g) => g.id === parseInt(gameId)) || {
         name: "Game Not Found",
         description: "No details available.",
-    };
-
-    // State to track edit mode
+      };
+    }
+  
+    // Edit Mode State
     let editMode = false;
-
+  
     // Editable fields
     let editedGame = { ...game };
-
+  
     const toggleEdit = () => {
-        editMode = !editMode;
-        if (!editMode) {
-            // Save edits back to the global store
-            const updatedGames = gamesList.map((g) =>
-                g.id === game.id ? editedGame : g
-            );
-            games.set(updatedGames);
-        }
+      editMode = !editMode;
+      if (!editMode && game.name !== "Game Not Found") {
+        // Save edits back to the store
+        const updatedGames = gamesList.map((g) =>
+          g.id === game.id ? editedGame : g
+        );
+        games.set(updatedGames);
+      }
     };
-
+  
     const goBack = () => navigate("/");
-</script>
-
-<Header />
-
-<div class="game-details">
+  </script>
+  
+  <Header />
+  
+  <div class="game-details">
     <button on:click={goBack}>Back</button>
-    {#if isLoggedIn}
+  
+    {#if game.name !== "Game Not Found"}
+      {#if isLoggedIn}
         <button on:click={toggleEdit}>{editMode ? "Save" : "Edit"}</button>
-    {/if}
-
-    <div class="details-container">
+      {/if}
+  
+      <div class="details-container">
         <h1>
-            {#if editMode}
-                <input type="text" bind:value={editedGame.name} />
-            {:else}
-                {game.name}
-            {/if}
+          {#if editMode}
+            <input type="text" bind:value={editedGame.name} />
+          {:else}
+            {game.name}
+          {/if}
         </h1>
-
-        <img src={game.imageurl} alt={game.name} class="game-image" />
-
+  
+        <img src={game.imageUrl || "/default-image.png"} alt={game.name} class="game-image" />
+  
         <ul>
-            <!-- Language -->
-            <li>
-                <strong>Language:</strong>
-                {#if editMode}
-                    <input type="text" bind:value={editedGame.language} />
-                {:else}
-                    {game.language}
-                {/if}
-            </li>
-
-            <!-- Rating (Visible only when logged in) -->
-            {#if isLoggedIn}
-                <li>
-                    <strong>Rating:</strong>
-                    {#if editMode}
-                        <input type="number" bind:value={editedGame.rating} step="0.1" min="0" max="10" />
-                    {:else}
-                        {game.rating}
-                    {/if}
-                </li>
-            {/if}
-
-            <!-- Last Played (Visible only when logged in) -->
-            {#if isLoggedIn}
-                <li>
-                    <strong>Last Played:</strong>
-                    {#if editMode}
-                        <input type="date" bind:value={editedGame.lastplayed} />
-                    {:else}
-                        {game.lastplayed}
-                    {/if}
-                </li>
-            {/if}
-
-            <!-- Min Players -->
-            <li>
-                <strong>Min Players:</strong>
-                {#if editMode}
-                    <input type="number" bind:value={editedGame.minplayers} />
-                {:else}
-                    {game.minplayers}
-                {/if}
-            </li>
-
-            <!-- Max Players -->
-            <li>
-                <strong>Max Players:</strong>
-                {#if editMode}
-                    <input type="number" bind:value={editedGame.maxplayers} />
-                {:else}
-                    {game.maxplayers}
-                {/if}
-            </li>
-
-            <!-- Tag -->
-            <li>
-                <strong>Tag:</strong>
-                {#if editMode}
-                    <input type="text" bind:value={editedGame.tag} />
-                {:else}
-                    {game.tag}
-                {/if}
-            </li>
-
-            <!-- Category -->
-            <li>
-                <strong>Category:</strong>
-                {#if editMode}
-                    <input type="text" bind:value={editedGame.category} />
-                {:else}
-                    {game.category.join(", ")}
-                {/if}
-            </li>
-
-            <!-- Owner (Visible only when logged in) -->
-            {#if isLoggedIn}
-                <li>
-                    <strong>Owner(s):</strong>
-                    {#if editMode}
-                        <input type="text" bind:value={editedGame.owner} />
-                    {:else}
-                        {game.owner.join(", ")}
-                    {/if}
-                </li>
-            {/if}
-
-            <!-- BoardGameGeek Link -->
-            <li>
-                <a href={game.bggurl} target="_blank">View on BoardGameGeek</a>
-            </li>
+          <li><strong>Language:</strong> {game.language || "Unknown"}</li>
+          <li><strong>Min Players:</strong> {game.minPlayers || "N/A"}</li>
+          <li><strong>Max Players:</strong> {game.maxPlayers || "N/A"}</li>
+          <li><strong>Description:</strong> {game.description || "No description provided."}</li>
+          {#if game.bggUrl}
+            <li><a href={game.bggUrl} target="_blank">View on BoardGameGeek</a></li>
+          {/if}
         </ul>
-    </div>
-</div>
-
+      </div>
+    {:else}
+      <div class="not-found">
+        <h1>404: Game Not Found</h1>
+        <button on:click={goBack}>Go Back Home</button>
+      </div>
+    {/if}
+  </div>
+  
+ 
 <style>
     .game-details {
         padding: 20px;

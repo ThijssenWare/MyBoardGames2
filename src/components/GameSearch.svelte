@@ -18,6 +18,7 @@ Outputs:
 -->
 
 <script>
+    import "../styles/GameSearch_Style.css"; // Import the styles
     import { fetchBGGData, fetchBGGDetails } from "../utils/bggAPI.js";
   
     export let newGame;
@@ -78,6 +79,7 @@ Outputs:
         <p>No results found.</p>
       {:else}
         <ul>
+          <!-- svelte-ignore a11y-click-events-have-key-events -->
           <li
             class="custom-option"
             on:click={() => handleGameSelected("custom")}
@@ -85,6 +87,7 @@ Outputs:
             My game is not in this list
           </li>
           {#each searchResults as game (game.id)}
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
             <li on:click={() => handleGameSelected(game)}>
               {game.name} ({game.year})
             </li>
@@ -94,27 +97,5 @@ Outputs:
     </div>
   </div>
   
-  <style>
-    .search-results ul {
-      list-style: none;
-      padding: 0;
-      margin: 1rem 0;
-    }
-  
-    .search-results li {
-      padding: 0.5rem;
-      border: 1px solid #ddd;
-      margin-bottom: 0.5rem;
-      cursor: pointer;
-    }
-  
-    .search-results li:hover {
-      background-color: #eee;
-    }
-  
-    .custom-option {
-      background-color: #ffd700;
-      font-weight: bold;
-    }
-  </style>
+
   

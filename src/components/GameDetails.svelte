@@ -15,13 +15,19 @@ It dynamically binds the input fields to the `newGame` object, which stores all 
     export let selectedFromBGG;
   
     const proceedToPreview = () => {
-      step = 3;
-    };
+    if (!newGame.name || !newGame.minPlayers || !newGame.maxPlayers) {
+        alert("Please fill out all required fields.");
+        return;
+    }
+    step = 3;
+};
+
   </script>
   
   <div class="step">
     <h2>Enter Game Details</h2>
     <div class="field">
+      <!-- svelte-ignore a11y-label-has-associated-control -->
       <label>Language:</label>
       <select bind:value={newGame.language}>
         {#each $languages as lang}
@@ -30,6 +36,7 @@ It dynamically binds the input fields to the `newGame` object, which stores all 
       </select>
     </div>
     <div class="field">
+      <!-- svelte-ignore a11y-label-has-associated-control -->
       <label>Personal Rating:</label>
       <input
         type="number"
@@ -40,10 +47,12 @@ It dynamically binds the input fields to the `newGame` object, which stores all 
       />
     </div>
     <div class="field">
+      <!-- svelte-ignore a11y-label-has-associated-control -->
       <label>Last Played:</label>
       <input type="date" bind:value={newGame.lastPlayed} />
     </div>
     <div class="field">
+      <!-- svelte-ignore a11y-label-has-associated-control -->
       <label>Categories:</label>
       {#each $categories as category}
         <label>
