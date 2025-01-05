@@ -23,20 +23,12 @@ This page serves as the homepage and displays the list of games with filters and
 - `GameList.svelte`: Displays the list of filtered games.
 -->
 <script>
-  import "../styles/Home_Style.css"; // Import the styles
-  import { loggedIn } from "../stores/auth"; // Assuming you have a store for loggedIn status
+  import "../styles/Home_Style.css"; // Import styles
+  import { loggedIn } from "../stores/auth"; // Assuming logged-in status is managed via store
   import Header from "../components/Header.svelte";
   import Filter from "../components/Filter.svelte";
   import GameList from "../components/GameList.svelte";
-  //import { games } from "../data/mockGames"; // Mock games data
 
-    // Debugging logs
-    console.log("Logged in status:", $loggedIn);
-
-  let username = "";
-  let householdName = "";
-
-  // State for filters, search, and sorting
   let filters = {
     mode: "All",
     categories: [],
@@ -46,18 +38,17 @@ This page serves as the homepage and displays the list of games with filters and
     myGamesOnly: false,
     householdOnly: false,
   };
-
+  let searchQuery = "";
   let sortBy = "name";
   let sortOrder = "asc";
-  let searchQuery = "";
 </script>
 
-<Header {loggedIn} {username} {householdName} />
+<Header {loggedIn} />
 
 <div class="container">
   <!-- Sidebar Filter Component -->
   <aside class="filter">
-    <Filter bind:filters {loggedIn} />
+    <Filter bind:filters />
   </aside>
 
   <!-- Main Game List Component -->
@@ -66,6 +57,7 @@ This page serves as the homepage and displays the list of games with filters and
       bind:searchQuery
       bind:sortBy
       bind:sortOrder
+      {filters}
     />
   </main>
 </div>

@@ -24,51 +24,66 @@ This component renders a list of games based on the filtered games and user inpu
 <script>
   import "../styles/GameList_Style.css"; // Import the styles
   import { navigate } from "../stores/routes";
-  import { loggedIn } from "../stores/auth"; // Importing the global loggedIn store
-  import { games } from "../stores/games"; // Import the global games store
+  import { loggedIn } from "../stores/auth";
+  import { games } from "../stores/games";
 
-  // Variables passed from the parent
-  export let searchQuery = ""; // Search input to filter games
-  export let sortBy = "name"; // Sorting field
-  export let sortOrder = "asc"; // Sorting order ("asc" or "desc")
+  export let searchQuery = ""; // Search query for filtering games
+  export let sortBy = "name";  // Sort field (e.g., "name", "rating")
+  export let sortOrder = "asc"; // Sort order ("asc" or "desc")
+  export let filters = {};  // Filters object passed from Home.svelte
 
   let filteredGames = [];
 
-  // Watch for changes to the games store and local search/sort variables
+  // Default filter values to allow all games to be shown
+  const defaultFilters = {
+    mode: "All",
+    numPlayers: 0,
+    rating: 0,
+    categories: [],
+    language: "All",
+    owner: "All",
+    myGamesOnly: false,
+    householdOnly: false,
+  };
+
+  // Merge the passed filters with default values
+  filters = { ...defaultFilters, ...filters };
+
+  // Watch for changes to games store, search, sort, or filters
   $: {
     const query = searchQuery.toLowerCase();
     filteredGames = $games
-      .filter((game) => game.name?.toLowerCase().includes(query)) // Filter based on search query
+      .filter((game) => {
+        const matchesSearch = game.name?.toLowerCase().includes(query);
+        const matchesMode = filters.mode === "All" || game.mode === filters.mode;
+        const matchesNumPlayers = filters.numPlayers === 0 || (filters.numPlayers >= game.minPlayers && filters.numPlayers <= game.maxPlayers);
+        const matchesRating = game.personalRating >= filters.rating;
+        const matchesCategories = filters.categories.length === 0 || filters.categories.some((cat) => game.categories.includes(cat));
+        const matchesLanguage = filters.language === "All" || game.language === filters.language;
+        const matchesOwner = filters.owner === "All" || game.owner === filters.owner;
+
+        return matchesSearch && matchesMode && matchesNumPlayers && matchesRating && matchesCategories && matchesLanguage && matchesOwner;
+      })
       .sort((a, b) => {
-        const fieldA = (a[sortBy] || "").toString().toLowerCase(); // Fallback for undefined fields
+        const fieldA = (a[sortBy] || "").toString().toLowerCase();
         const fieldB = (b[sortBy] || "").toString().toLowerCase();
-        
-        // If sorting by 'rating', convert ratings to numbers
+
+        // Sorting by rating or other fields
         if (sortBy === "rating") {
-          const ratingA = parseFloat(a.personalRating) || 0; // Parse the rating as a float
-          const ratingB = parseFloat(b.personalRating) || 0; // Parse the rating as a float
-          
-          if (ratingA < ratingB) return sortOrder === "asc" ? -1 : 1;
-          if (ratingA > ratingB) return sortOrder === "asc" ? 1 : -1;
-          return 0;
+          const ratingA = parseFloat(a.personalRating) || 0;
+          const ratingB = parseFloat(b.personalRating) || 0;
+          return sortOrder === "asc" ? ratingA - ratingB : ratingB - ratingA;
         }
 
-        // Default comparison for other fields
-        if (fieldA < fieldB) return sortOrder === "asc" ? -1 : 1;
-        if (fieldA > fieldB) return sortOrder === "asc" ? 1 : -1;
-        return 0;
+        return fieldA < fieldB ? (sortOrder === "asc" ? -1 : 1) : fieldA > fieldB ? (sortOrder === "asc" ? 1 : -1) : 0;
       });
   }
 
-  // Function to navigate to GameDetails
   const goToDetails = (id) => {
-    console.log(`Navigating to details of game with id: ${id}`);
     navigate(`/game-details/${id}`);
   };
 
-  // Function to navigate to the "Add Game" page
   const goToAddGame = () => {
-    console.log("Navigating to Add Game page");
     navigate("/add-game");
   };
 </script>
@@ -82,7 +97,7 @@ This component renders a list of games based on the filtered games and user inpu
   />
 </div>
 
-<!-- Sorting Options with Add Game Button -->
+<!-- Sorting Options -->
 <div class="sorting">
   <label>
     Sort By:
@@ -104,9 +119,7 @@ This component renders a list of games based on the filtered games and user inpu
     <!-- Add Game Button -->
     <button
       class="add-game-button"
-      title="Add Game"
       on:click={goToAddGame}
-      aria-label="Add a new game"
     >
       ➕
     </button>
@@ -117,32 +130,21 @@ This component renders a list of games based on the filtered games and user inpu
 <div class="games-list">
   {#if filteredGames.length > 0}
     {#each filteredGames as game}
-      <!-- Game Row -->
       <div
         class="game-row"
         on:click={() => goToDetails(game.id)}
-        tabindex="0"
-        role="button"
-        aria-label={`View details for ${game.name}`}
       >
         <img class="game-thumbnail" src={game.imageUrl} alt={game.name} />
         <div class="game-info">
           <h3>{game.name}</h3>
           <p>Rating: {game.personalRating}</p>
         </div>
-        <button
-          class="view-details"
-          on:click|stopPropagation={() => goToDetails(game.id)}
-        >
+        <button on:click|stopPropagation={() => goToDetails(game.id)}>
           View Details
         </button>
       </div>
     {/each}
   {:else}
-    <p>No games found matching your search.</p>
+    <p>No games found matching your search and filters.</p>
   {/if}
 </div>
-
-
-
-  

@@ -27,25 +27,32 @@ This is the root component of the application. It handles routing and dynamicall
 	import Home from "./pages/Home.svelte";
 	import GameDetails from "./pages/GameDetails.svelte";
 	import AddGame from "./pages/AddGame.svelte";
-  
+	
 	let route = "/";
 	
 	// Subscribe to route changes
 	$: $currentRoute, route = $currentRoute;
-
-	$: console.log(route);
-
 	
-	// Dynamically determine which component to render
+	// Define filters (default empty object, can be passed as needed)
+	let filters = {
+	  mode: "All",
+	  categories: [],
+	  numPlayers: 1,
+	  language: "All",
+	  owner: "All",
+	  myGamesOnly: false,
+	  householdOnly: false,
+	};
+  
 	let Component;
 	let componentProps = {};
-	
-	// Update component based on route
+  
+	// Dynamically update component based on route
 	$: {
 	  switch (route) {
 		case "/":
 		  Component = Home;
-		  componentProps = {};
+		  componentProps = { filters };  // Pass filters to Home component
 		  break;
 		case "/add-game":
 		  Component = AddGame;
@@ -54,7 +61,7 @@ This is the root component of the application. It handles routing and dynamicall
 		default:
 		  if (route.startsWith("/game-details/")) {
 			Component = GameDetails;
-			const gameId = route.split("/")[2]; // Extract the game ID
+			const gameId = route.split("/")[2];
 			componentProps = { gameId };
 		  } else {
 			Component = null; // Handle 404
@@ -63,7 +70,7 @@ This is the root component of the application. It handles routing and dynamicall
 	  }
 	}
   
-	// Function to navigate back to the Home page
+	// Navigate back to Home page
 	const goHome = () => {
 	  navigate("/");
 	};
@@ -104,5 +111,6 @@ This is the root component of the application. It handles routing and dynamicall
 	  background-color: #40e0d0;
 	}
   </style>
+  
   
   
