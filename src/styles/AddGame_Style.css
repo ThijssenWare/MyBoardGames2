@@ -5,9 +5,10 @@
     background: #f9f9f9;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  }
+    position: relative;
+}
 
-  .confirmation-popup {
+.confirmation-popup {
     position: fixed;
     top: 20px;
     right: 20px;
@@ -18,22 +19,53 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     font-size: 1rem;
     animation: fadeInOut 4s;
-  }
+}
 
-  @keyframes fadeInOut {
+@keyframes fadeInOut {
     0% {
-      opacity: 0;
-      transform: translateY(-10px);
+        opacity: 0;
+        transform: translateY(-10px);
     }
     10% {
-      opacity: 1;
-      transform: translateY(0);
+        opacity: 1;
+        transform: translateY(0);
     }
     90% {
-      opacity: 1;
+        opacity: 1;
     }
     100% {
-      opacity: 0;
-      transform: translateY(-10px);
+        opacity: 0;
+        transform: translateY(-10px);
     }
-  }
+}
+
+/* Credit Image for BGG */
+.bgg-credit {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.bgg-credit img {
+    max-width: 200px;
+    height: auto;
+    display: inline-block;
+}
+
+/* Log Styles */
+.log {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background-color: #333;
+    color: white;
+    padding: 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+.log p {
+    margin: 0;
+    text-align: center;
+}

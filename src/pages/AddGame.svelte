@@ -2,9 +2,9 @@
   import "../styles/AddGame_Style.css"; // Import the styles
   import Header from "../components/Header.svelte";
   import { games } from "../stores/games.js";
-  import GameSearch from "../components/GameSearch.svelte";
-  import GameDetails from "../components/GameDetails.svelte";
-  import GamePreview from "../components/GamePreview.svelte";
+  import GameSearch from "../components/AddGame_GameSearch.svelte";
+  import GameDetails from "../components/AddGame_GameDetails.svelte";
+  import GamePreview from "../components/AddGame_GamePreview.svelte";
 
   let step = 1;
   let newGame = {};
@@ -57,3 +57,12 @@
   </div>
 {/if}
 
+<!-- Credit Image for BGG -->
+<div class="bgg-credit">
+  <img src="/assets/PowerBGG.jpeg" alt="Powered by BGG" />
+</div>
+
+<!-- Log -->
+<div class="log">
+  <p>Check the console for detailed logs.</p>
+</div>

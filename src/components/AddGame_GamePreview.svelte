@@ -1,5 +1,5 @@
 <!--
-GamePreview.svelte
+AddGame_GamePreview.svelte
 
 Description:
 This component displays a preview of the new game's details before it is saved. It provides buttons to save the game or cancel the operation, resetting the form.

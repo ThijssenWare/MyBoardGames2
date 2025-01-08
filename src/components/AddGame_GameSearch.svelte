@@ -1,5 +1,5 @@
 <!--
-GameSearch.svelte
+AddGame_GameSearch.svelte
 
 Description:
 This component handles the search functionality for finding games using the BoardGameGeek API. It dynamically fetches and displays search results based on user input. It allows the user to select a game or choose to add a custom game.
@@ -50,10 +50,11 @@ Outputs:
           designer: details.designer,
           artist: details.artist,
           publisher: details.publisher,
+          popByBGG: true,
           language: "",
           personalRating: "",
           lastPlayed: "",
-          tag: "",
+          mode: "",
           dutchDescription: "",
           categories: [],
         };

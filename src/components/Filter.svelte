@@ -14,6 +14,7 @@
     import { translations } from '../stores/translations'; // Translations store
     import { selectedLanguage } from '../stores/languages'; // Selected language store
     import { get } from 'svelte/store'; // Helper function to retrieve current values from stores
+    import { modeOptions } from '../data/modeOptions'; // Import mode options
   
     // Props: `filters` allows parent components to bind filter values
     export let filters = {};
@@ -65,32 +66,28 @@
       <label>
         {t("mode") || "Mode"}:
         <select bind:value={filters.mode}>
-          <option value="All">{t("all") || "All"}</option>
-          <option value="Cooperative">{t("cooperative") || "Cooperative"}</option>
-          <option value="Competitive">{t("competitive") || "Competitive"}</option>
-          <option value="Mix">{t("mix") || "Mix"}</option>
-          <option value="Other">{t("other") || "Other"}</option>
+          {#each modeOptions as { value, label }}
+            <option value={value}>{t(label.toLowerCase()) || label}</option>
+          {/each}
         </select>
       </label>
     </div>
   
     <!-- Number of Players Filter -->
-<!-- Number of Players Filter -->
-<div class="filter-group">
-    <label>
-      {t("numPlayers") || "Number of Players"}:
-    </label>
-    <input
-      type="range"
-      min="0"
-      max="10"
-      step="1"
-      bind:value={filters.numPlayers}
-      class="slider"
-    />
-    <span class="slider-value">{filters.numPlayers}{filters.numPlayers === 10 ? '+' : ''}</span>
-  </div>
-  
+    <div class="filter-group">
+        <label>
+          {t("numPlayers") || "Number of Players"}:
+        </label>
+        <input
+          type="range"
+          min="0"
+          max="10"
+          step="1"
+          bind:value={filters.numPlayers}
+          class="slider"
+        />
+        <span class="slider-value">{filters.numPlayers}{filters.numPlayers === 10 ? '+' : ''}</span>
+    </div>
   
     <!-- Toggle Advanced Filters Button -->
     <button class="toggle-advanced" on:click={() => (showAdvancedFilters = !showAdvancedFilters)}>
@@ -168,6 +165,3 @@
       {/if}
     {/if}
   </div>
-  
-
-
