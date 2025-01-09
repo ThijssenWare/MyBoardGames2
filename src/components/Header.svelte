@@ -2,11 +2,13 @@
     import "../styles/Header_Style.css";
     import { navigate } from "../stores/routes";
     import { user, loggedIn } from "../stores/auth";
+    import { filters } from '../stores/filters';
     import { get } from "svelte/store";
     import { languages, selectedLanguage } from "../stores/languages";
     import { translations } from "../stores/translations";
     import LoginRegister from "./LoginRegister.svelte";
-
+    import { defaultFilters } from '../data/filter_DefaultValues'; // Import the default filter values
+    
     export let username = "";
     export let householdName = "";
 
@@ -19,6 +21,7 @@
     const logOut = () => {
         loggedIn.set(false);
         user.set(null); // Clear user data when logging out
+        filters.set(defaultFilters); // Reset filters to default values
         householdName = ""; // Clear householdName
     };
 

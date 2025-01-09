@@ -1,4 +1,3 @@
-// src/stores/translations.js
 import { writable } from 'svelte/store';
 
 // Translations for different languages
@@ -32,6 +31,12 @@ export const translations = writable({
         householdGames: "Show Household Games",
         moreOptions: "More options",
         hideOptions: "Hide options",
+        filterByUsing: "Filter by using:",
+        or: "OR",
+        and: "AND",
+        selectAll: "Select All",
+        removeAll: "Remove All",
+        resetAllOptions: "Reset All Options", // Added
     },
     es: {
         home: "Inicio",
@@ -46,6 +51,7 @@ export const translations = writable({
         language: "Idioma (requerido)",
         minPlayers: "Mínimo de jugadores (requerido)",
         maxPlayers: "Máximo de jugadores (requerido)",
+        numPlayers: "Número de jugadores",
         bggUrl: "URL de BoardGameGeek (requerido)",
         imageUrl: "URL de imagen (requerido)",
         tag: "Etiqueta (requerido)",
@@ -58,7 +64,15 @@ export const translations = writable({
         filterTitle: "Filtros",
         mode: "Modo",
         myGames: "Mostrar mis juegos",
-        householdGames: "Mostrar juegos del hogar"
+        householdGames: "Mostrar juegos del hogar",
+        moreOptions: "Más opciones",
+        hideOptions: "Ocultar opciones",
+        filterByUsing: "Filtrar por usar:",
+        or: "O",
+        and: "Y",
+        selectAll: "Seleccionar todo",
+        removeAll: "Eliminar todo",
+        resetAllOptions: "Restablecer todas las opciones", // Added
     },
     de: {
         home: "Startseite",
@@ -73,6 +87,7 @@ export const translations = writable({
         language: "Sprache (erforderlich)",
         minPlayers: "Min Spieler (erforderlich)",
         maxPlayers: "Max Spieler (erforderlich)",
+        numPlayers: "Anzahl der Spieler",
         bggUrl: "BoardGameGeek URL (erforderlich)",
         imageUrl: "Bild-URL (erforderlich)",
         tag: "Tag (erforderlich)",
@@ -85,7 +100,15 @@ export const translations = writable({
         filterTitle: "Filter",
         mode: "Modus",
         myGames: "Meine Spiele anzeigen",
-        householdGames: "Haushaltsspiele anzeigen"
+        householdGames: "Haushaltsspiele anzeigen",
+        moreOptions: "Mehr Optionen",
+        hideOptions: "Optionen verbergen",
+        filterByUsing: "Filtern durch Verwendung:",
+        or: "ODER",
+        and: "UND",
+        selectAll: "Alle auswählen",
+        removeAll: "Alle entfernen",
+        resetAllOptions: "Alle Optionen zurücksetzen", // Added
     },
     pt: {
         home: "Início",
@@ -100,6 +123,7 @@ export const translations = writable({
         language: "Idioma (obrigatório)",
         minPlayers: "Mínimo de jogadores (obrigatório)",
         maxPlayers: "Máximo de jogadores (obrigatório)",
+        numPlayers: "Número de jogadores",
         bggUrl: "URL do BoardGameGeek (obrigatório)",
         imageUrl: "URL da imagem (obrigatório)",
         tag: "Etiqueta (obrigatório)",
@@ -112,7 +136,15 @@ export const translations = writable({
         filterTitle: "Filtros",
         mode: "Modo",
         myGames: "Mostrar meus jogos",
-        householdGames: "Mostrar jogos da casa"
+        householdGames: "Mostrar jogos da casa",
+        moreOptions: "Mais opções",
+        hideOptions: "Esconder opções",
+        filterByUsing: "Filtrar por usar:",
+        or: "OU",
+        and: "E",
+        selectAll: "Selecionar todos",
+        removeAll: "Remover todos",
+        resetAllOptions: "Redefinir todas as opções", // Added
     },
     nl: {
         home: "Home",
@@ -143,5 +175,11 @@ export const translations = writable({
         householdGames: "Toon huishoudspellen",
         moreOptions: "Meer opties",
         hideOptions: "Verberg opties",
+        filterByUsing: "Filteren door gebruik:",
+        or: "OF",
+        and: "EN",
+        selectAll: "Alles selecteren",
+        removeAll: "Alles verwijderen",
+        resetAllOptions: "Reset alle opties", // Added
     }
 });

@@ -103,6 +103,7 @@ This component displays detailed information about a specific game.
           <li><strong>Play Time:</strong> {game.minPlaytime || "N/A"} - {game.maxPlaytime || "N/A"} minutes</li>
           <li><strong>Description:</strong> {game.description || "No description provided."}</li>
           <li><strong>Mode:</strong> {game.mode || "No mode provided."}</li>
+          <li><strong>Categories:</strong> {game.categories || "No categories provided."}</li>
           {#if game.bggUrl}
             <li><a href={game.bggUrl} target="_blank">View on BoardGameGeek</a></li>
           {/if}

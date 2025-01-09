@@ -27,6 +27,7 @@
    */
   $: {
     const query = searchQuery.toLowerCase();
+    const categoryFilterType = $filters.categories.length ? $filters.categoryFilterType : 'OR'; // Get selected category filter type (OR/AND)
 
     filteredGames = $games
       .filter((game) => {
@@ -44,9 +45,25 @@
           $filters.numPlayers === 0 ||
           ($filters.numPlayers >= minPlayers && $filters.numPlayers <= maxPlayers);
         const matchesRating = gameRating >= $filters.rating;
-        const matchesCategories =
-          $filters.categories.length === 0 ||
-          $filters.categories.some((cat) => game.categories?.includes(cat));
+        
+        // Apply AND/OR logic for categories
+        let matchesCategories = false;
+        if ($filters.categories.length > 0) {
+          if (categoryFilterType === 'OR') {
+            // If OR, game matches if it has at least one selected category
+            matchesCategories = $filters.categories.some((cat) => 
+              game.categories?.some(gameCategory => gameCategory.toLowerCase() === cat.toLowerCase())
+            );
+          } else if (categoryFilterType === 'AND') {
+            // If AND, game matches only if it has all selected categories
+            matchesCategories = $filters.categories.every((cat) => 
+              game.categories?.some(gameCategory => gameCategory.toLowerCase() === cat.toLowerCase())
+            );
+          }
+        } else {
+          matchesCategories = true; // No category filter selected, so match all
+        }
+
         const matchesLanguage = $filters.language === "All" || game.language === $filters.language;
         const matchesOwner = $filters.owner === "All" || game.owner === $filters.owner;
 
@@ -155,3 +172,4 @@
     <p>No games found matching your search and filters.</p>
   {/if}
 </div>
+
