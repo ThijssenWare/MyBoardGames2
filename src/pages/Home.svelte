@@ -26,21 +26,24 @@ This page serves as the homepage and displays the list of games with filters and
   import "../styles/Home_Style.css"; // Import styles
   import { loggedIn } from "../stores/auth"; // Assuming logged-in status is managed via store
   import Header from "../components/Header.svelte";
+  import { filters } from '../stores/filters'; // Import filters store
+  import { games } from '../stores/games'; // Import games store to ensure reactive updates
   import Filter from "../components/Filter.svelte";
   import GameList from "../components/GameList.svelte";
 
-  let filters = {
-    mode: "All",
-    categories: [],
-    numPlayers: 1,
-    language: "All",
-    owner: "All",
-    myGamesOnly: false,
-    householdOnly: false,
-  };
+  // Local variable for filters
+  let localFilters = $filters;  // Use the current value of the filters store
+
   let searchQuery = "";
   let sortBy = "name";
   let sortOrder = "asc";
+
+  // Update the store whenever the local variable changes
+  $: filters.set(localFilters);
+
+  // Log the current filters and games to debug
+  $: console.log("Filters in Home:", localFilters);
+  $: console.log("Games in Home:", $games);
 </script>
 
 <Header {loggedIn} />
@@ -48,7 +51,8 @@ This page serves as the homepage and displays the list of games with filters and
 <div class="container">
   <!-- Sidebar Filter Component -->
   <aside class="filter">
-    <Filter bind:filters />
+    <!-- Bind the localFilters variable instead of directly binding to filters -->
+    <Filter bind:filters={localFilters} />
   </aside>
 
   <!-- Main Game List Component -->
@@ -57,7 +61,7 @@ This page serves as the homepage and displays the list of games with filters and
       bind:searchQuery
       bind:sortBy
       bind:sortOrder
-      {filters}
+      {localFilters}  
     />
   </main>
 </div>

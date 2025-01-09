@@ -21,15 +21,16 @@
   const saveGame = () => {
     console.log("Saving game:", newGame);
     games.update((current) => {
-      console.log("Current games before update:", current);
-      const updatedGames = [...current, { ...newGame, id: Date.now().toString() }];
-      console.log("Updated games:", updatedGames);
-      return updatedGames;
+        console.log("Current games before update:", current);
+        const updatedGames = [...current, { ...newGame, id: Date.now().toString() }];
+        console.log("Updated games:", updatedGames);
+        return updatedGames;
     });
     showConfirmation = true; // Show confirmation popup
     setTimeout(() => (showConfirmation = false), 2000); // Hide popup after 2 seconds
     resetForm();
-  };
+};
+
 
   $: console.log("Current step:", step);
   $: console.log("Current game data:", newGame);

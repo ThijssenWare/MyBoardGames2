@@ -1,68 +1,64 @@
 <!-- 
-GameList.svelte
+    File: src/components/GameList.svelte
 
-## Folder Structure:
-- src/components/GameList.svelte
-
-## Description:
-This component renders a list of games based on the filtered games and user inputs like search query and sorting preferences.
-
-## Variables Exported:
-- None.
-
-## Variables Expected:
-- searchQuery (string): Search input to filter games.
-- sortBy (string): Field used for sorting the games.
-- sortOrder (string): Order for sorting ("asc" or "desc").
-
-## Dependencies:
-- `navigate` from `stores/routes`: For navigation between pages.
-- `loggedIn` from `stores/auth`: Global store to check logged-in status.
-- `games` from `stores/games`: Global store holding the list of games.
+    Description:
+    This component renders a list of games based on the filtered games and user inputs like search query and sorting preferences.
 -->
-<!-- GameList.svelte -->
+
 <script>
   import "../styles/GameList_Style.css"; // Import the styles
   import { navigate } from "../stores/routes";
   import { loggedIn } from "../stores/auth";
-  import { games } from "../stores/games";
+  import { games } from "../stores/games"; // Import games store
+  import { filters } from '../stores/filters'; // Import persistent filters store
 
   export let searchQuery = ""; // Search query for filtering games
   export let sortBy = "name";  // Sort field (e.g., "name", "rating")
   export let sortOrder = "asc"; // Sort order ("asc" or "desc")
-  export let filters = {};  // Filters object passed from Home.svelte
 
   let filteredGames = [];
 
-  // Default filter values to allow all games to be shown
-  const defaultFilters = {
-    mode: "All",
-    numPlayers: 0,
-    rating: 0,
-    categories: [],
-    language: "All",
-    owner: "All",
-    myGamesOnly: false,
-    householdOnly: false,
-  };
-
-  // Merge the passed filters with default values
-  filters = { ...defaultFilters, ...filters };
-
-  // Watch for changes to games store, search, sort, or filters
+  /**
+   * Reactive filtering logic:
+   * This block will recompute whenever any of the following variables change:
+   * - $games (games store)
+   * - $filters (filters store)
+   * - searchQuery, sortBy, or sortOrder
+   */
   $: {
     const query = searchQuery.toLowerCase();
+
     filteredGames = $games
       .filter((game) => {
-        const matchesSearch = game.name?.toLowerCase().includes(query);
-        const matchesMode = filters.mode === "All" || game.mode === filters.mode;
-        const matchesNumPlayers = filters.numPlayers === 0 || (filters.numPlayers >= game.minPlayers && filters.numPlayers <= game.maxPlayers);
-        const matchesRating = game.personalRating >= filters.rating;
-        const matchesCategories = filters.categories.length === 0 || filters.categories.some((cat) => game.categories.includes(cat));
-        const matchesLanguage = filters.language === "All" || game.language === filters.language;
-        const matchesOwner = filters.owner === "All" || game.owner === filters.owner;
+        // Convert fields to numbers for accurate comparisons
+        const gameRating = parseFloat(game.personalRating) || 0;
+        const minPlayers = parseInt(game.minPlayers) || 0;
+        const maxPlayers = parseInt(game.maxPlayers) || Infinity;
 
-        return matchesSearch && matchesMode && matchesNumPlayers && matchesRating && matchesCategories && matchesLanguage && matchesOwner;
+        // Ensure game object exists and has required properties
+        if (!game || !game.name) return false;
+
+        const matchesSearch = game.name.toLowerCase().includes(query);
+        const matchesMode = $filters.mode === "All" || game.mode === $filters.mode;
+        const matchesNumPlayers =
+          $filters.numPlayers === 0 ||
+          ($filters.numPlayers >= minPlayers && $filters.numPlayers <= maxPlayers);
+        const matchesRating = gameRating >= $filters.rating;
+        const matchesCategories =
+          $filters.categories.length === 0 ||
+          $filters.categories.some((cat) => game.categories?.includes(cat));
+        const matchesLanguage = $filters.language === "All" || game.language === $filters.language;
+        const matchesOwner = $filters.owner === "All" || game.owner === $filters.owner;
+
+        return (
+          matchesSearch &&
+          matchesMode &&
+          matchesNumPlayers &&
+          matchesRating &&
+          matchesCategories &&
+          matchesLanguage &&
+          matchesOwner
+        );
       })
       .sort((a, b) => {
         const fieldA = (a[sortBy] || "").toString().toLowerCase();
@@ -75,7 +71,15 @@ This component renders a list of games based on the filtered games and user inpu
           return sortOrder === "asc" ? ratingA - ratingB : ratingB - ratingA;
         }
 
-        return fieldA < fieldB ? (sortOrder === "asc" ? -1 : 1) : fieldA > fieldB ? (sortOrder === "asc" ? 1 : -1) : 0;
+        return fieldA < fieldB
+          ? sortOrder === "asc"
+            ? -1
+            : 1
+          : fieldA > fieldB
+          ? sortOrder === "asc"
+            ? 1
+            : -1
+          : 0;
       });
   }
 
@@ -130,19 +134,22 @@ This component renders a list of games based on the filtered games and user inpu
 <div class="games-list">
   {#if filteredGames.length > 0}
     {#each filteredGames as game}
-      <div
-        class="game-row"
-        on:click={() => goToDetails(game.id)}
-      >
-        <img class="game-thumbnail" src={game.imageUrl} alt={game.name} />
-        <div class="game-info">
-          <h3>{game.name}</h3>
-          <p>Rating: {game.personalRating}</p>
+      <!-- Ensure valid game object is rendered -->
+      {#if game}
+        <div
+          class="game-row"
+          on:click={() => goToDetails(game.id)}
+        >
+          <img class="game-thumbnail" src={game.imageUrl} alt={game.name} />
+          <div class="game-info">
+            <h3>{game.name}</h3>
+            <p>Rating: {game.personalRating}</p>
+          </div>
+          <button on:click|stopPropagation={() => goToDetails(game.id)}>
+            View Details
+          </button>
         </div>
-        <button on:click|stopPropagation={() => goToDetails(game.id)}>
-          View Details
-        </button>
-      </div>
+      {/if}
     {/each}
   {:else}
     <p>No games found matching your search and filters.</p>

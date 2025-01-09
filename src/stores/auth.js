@@ -44,3 +44,4 @@ loggedIn.subscribe(($loggedIn) => {
     localStorage.setItem('loggedIn', $loggedIn ? 'true' : 'false');
 });
 
+// NEXT NEED USER_ID TO GET USER_GAMES WORKING --> ALREADY SEEMS TO BE SAVED
