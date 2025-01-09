@@ -21,8 +21,26 @@ This file defines a Svelte store to manage the global authentication state (logg
  */
 
 
-// src/stores/auth.js
-import { writable } from "svelte/store";
+// In stores/auth.js
+import { writable } from 'svelte/store';
 
-// Global store to manage user login status
-export const loggedIn = writable(false);
+// Load user data from localStorage if available
+const storedUser = localStorage.getItem('user');
+const storedLoggedIn = localStorage.getItem('loggedIn') === 'true';
+
+export const user = writable(storedUser ? JSON.parse(storedUser) : null);
+export const loggedIn = writable(storedLoggedIn);
+
+// Watch for changes and store them in localStorage
+user.subscribe(($user) => {
+    if ($user) {
+        localStorage.setItem('user', JSON.stringify($user));
+    } else {
+        localStorage.removeItem('user');
+    }
+});
+
+loggedIn.subscribe(($loggedIn) => {
+    localStorage.setItem('loggedIn', $loggedIn ? 'true' : 'false');
+});
+

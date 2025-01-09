@@ -1,126 +1,123 @@
-<!-- 
-Header.svelte
-
-## Folder Structure Expectations:
-- src/
-  - components/
-    - Header.svelte (this file)
-  - stores/
-    - routes.js
-    - auth.js (for global loggedIn state)
-
-## Variables Imported (from parent):
-- username: String - the name of the logged-in user.
-- householdName: String - household name for the user.
-
-## Dependencies:
-- Global login state via 'loggedIn' store in stores/auth.js.
-- Manual routing via 'navigate()' function in stores/routes.js.
-
-## Variables Exported:
-- None.
--->
-
 <script>
-    import "../styles/Header_Style.css"; // Import the styles
+    import "../styles/Header_Style.css";
     import { navigate } from "../stores/routes";
-    import { loggedIn } from "../stores/auth"; 
-    import { get } from "svelte/store"; 
-    import { languages, selectedLanguage } from "../stores/languages"; // Import global language stores
-    import { translations } from "../stores/translations"; // Import translations store
+    import { user, loggedIn } from "../stores/auth";
+    import { get } from "svelte/store";
+    import { languages, selectedLanguage } from "../stores/languages";
+    import { translations } from "../stores/translations";
+    import LoginRegister from "./LoginRegister.svelte";
 
     export let username = "";
     export let householdName = "";
 
-    let isDropdownOpen = false;
-    let isLanguageDropdownOpen = false;
+    let isDropdownOpen = false; // For account options
+    let isLanguageDropdownOpen = false; // For language selector
+    let isLoginModalOpen = false; // For login/register modal
+    let showRegisterForm = false; // Toggle between login and register forms
+    let successMessage = ""; // Registration success message
 
-    // Function to toggle login state
-    const toggleLogin = () => {
-      loggedIn.update((value) => !value);
-    };
-
-    // Function to log out
     const logOut = () => {
-      loggedIn.set(false);
-      alert("Logged out!");
+        loggedIn.set(false);
+        user.set(null); // Clear user data when logging out
+        householdName = ""; // Clear householdName
     };
 
-    // Function to change the selected language
     const changeLanguage = (language) => {
-        selectedLanguage.set(language);  // Set the new language in the store
-        isLanguageDropdownOpen = false;  // Close the language dropdown after selection
+        selectedLanguage.set(language);
+        isLanguageDropdownOpen = false;
     };
 
-    // Function to fetch the current translation based on the selected language
     const getTranslation = (key) => {
         const lang = get(selectedLanguage).code;
         const translationsForLang = get(translations)[lang];
-        return translationsForLang[key] || key;  // Return translated text or key if not found
+        return translationsForLang[key] || key;
+    };
+
+    const handleLoginSuccess = () => {
+        isLoginModalOpen = false; // Close modal on login success
+    };
+
+    const handleRegisterSuccess = () => {
+        successMessage = getTranslation("registration_successful");
+        setTimeout(() => {
+            successMessage = "";
+            isLoginModalOpen = false; // Close modal after registration success
+            showRegisterForm = false; // Ensure we reset to the login form
+        }, 2000);
     };
 </script>
 
 <header class="header">
+    <!-- Left Section -->
     <div class="header-left">
-        <button
-            class:logged-in={$loggedIn}
-            class:logged-out={!$loggedIn}
-            on:click={toggleLogin}
-        >
-            {$loggedIn ? getTranslation("logout") : getTranslation("login")}
-        </button>
         <nav>
-            <!-- svelte-ignore a11y-invalid-attribute -->
             <a href="#" on:click|preventDefault={() => navigate("/")}>{getTranslation("home")}</a>
+            <a href="#" on:click|preventDefault={() => navigate("/about")}>{getTranslation("about")}</a>
+            <a href="#" on:click|preventDefault={() => navigate("/contact")}>{getTranslation("contact")}</a>
         </nav>
     </div>
 
+    <!-- Right Section -->
     <div class="header-right">
-        {#if $loggedIn}
-            <div>
-                {getTranslation("welcome", { username, householdName })}
-            </div>
-        {/if}
-        <button
-            on:click={() => (isDropdownOpen = !isDropdownOpen)}
-            aria-expanded={isDropdownOpen}
-            aria-label="Account options dropdown"
-        >
-            {$loggedIn ? getTranslation("account") : getTranslation("login")}
-        </button>
-        {#if isDropdownOpen}
-            <div class="dropdown" role="menu">
-                {#if $loggedIn}
-                    <button on:click={logOut}>{getTranslation("logout")}</button>
-                {:else}
-                    <button on:click={() => loggedIn.set(true)}>{getTranslation("logIn")}</button>
-                    <button on:click={() => alert(getTranslation("register"))}>{getTranslation("register")}</button>
+        <!-- Language Selector -->
+        <div class="language-selector">
+            <button
+                on:click={() => (isLanguageDropdownOpen = !isLanguageDropdownOpen)}
+                aria-expanded={isLanguageDropdownOpen}
+                aria-label="Language options dropdown"
+            >
+                {#if $selectedLanguage}
+                    <img src={$selectedLanguage.flag} alt="Selected Language" width="20" height="14" />
+                    <span class="language-name">{$selectedLanguage.name}</span>
+                    <span class="arrow-down">▼</span>
                 {/if}
-            </div>
-        {/if}
-
-        <!-- Language Selector (Flag Image) -->
-        <button
-            on:click={() => (isLanguageDropdownOpen = !isLanguageDropdownOpen)}
-            aria-expanded={isLanguageDropdownOpen}
-            aria-label="Language options dropdown"
-        >
-            {#if $selectedLanguage}
-                <img src={$selectedLanguage.flag} alt="Selected Language" width="20" height="14" />  <!-- Small flag image -->
-                {$selectedLanguage.name}
+            </button>
+            {#if isLanguageDropdownOpen}
+                <div class="language-dropdown" role="menu">
+                    {#each $languages as language}
+                        <button on:click={() => changeLanguage(language)}>
+                            <img src={language.flag} alt={language.name} width="20" height="14" />
+                            <span>{language.name}</span>
+                        </button>
+                    {/each}
+                </div>
             {/if}
+        </div>
+
+<!-- Account/Login Button -->
+<div class="account-section">
+    {#if $loggedIn && $user} <!-- Check that user is not null -->
+        <div>
+            <span class="welcome-message">
+                {getTranslation("welcome")}, {$user.username} {#if $user.householdName}from {$user.householdName}{/if}
+            </span>
+            <button on:click={logOut} class="logout-button">{getTranslation("logout")}</button>
+        </div>
+    {:else}
+        <button on:click={() => (isLoginModalOpen = true)} aria-expanded={isLoginModalOpen} aria-label="Login/Register modal">
+            {getTranslation("login")}
         </button>
+    {/if}
+</div>
 
-        {#if isLanguageDropdownOpen}
-            <div class="language-dropdown" role="menu">
-                {#each $languages as language}
-                    <button on:click={() => changeLanguage(language)}>
-                        <img src={language.flag} alt={language.name} width="20" height="14" /> <!-- Small flag image -->
-                        {language.name}
-                    </button>
-                {/each}
+
+
+    <!-- Login/Register Modal -->
+    {#if isLoginModalOpen}
+        <div class="modal-overlay" on:click={() => (isLoginModalOpen = false)}>
+            <div class="login-modal" on:click|stopPropagation>
+                <button class="close-button" on:click={() => (isLoginModalOpen = false)}>✕</button>
+                {#if successMessage}
+                    <p class="success-message">{successMessage}</p>
+                {/if}
+                <LoginRegister
+                    bind:username={username}
+                    showRegisterForm={showRegisterForm}
+                    on:loginSuccess={handleLoginSuccess}
+                    on:registerSuccess={handleRegisterSuccess}
+                    on:toggleForm={() => (showRegisterForm = !showRegisterForm)}
+                />
             </div>
-        {/if}
-    </div>
+        </div>
+    {/if}
 </header>
-

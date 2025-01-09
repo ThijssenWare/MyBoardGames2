@@ -5,7 +5,7 @@ import { writable } from 'svelte/store';
 export const translations = writable({
     en: {
         home: "Home",
-        welcome: "Welcome, {username} from {householdName}",
+        welcome: "Welcome",
         login: "Login / Register",
         account: "Account",
         logout: "Log Out",
@@ -32,11 +32,10 @@ export const translations = writable({
         householdGames: "Show Household Games",
         moreOptions: "More options",
         hideOptions: "Hide options",
-        mode: "Game mode"
     },
     es: {
         home: "Inicio",
-        welcome: "Bienvenido, {username} de {householdName}",
+        welcome: "Bienvenido",
         login: "Iniciar sesión / Registrarse",
         account: "Cuenta",
         logout: "Cerrar sesión",
@@ -63,7 +62,7 @@ export const translations = writable({
     },
     de: {
         home: "Startseite",
-        welcome: "Willkommen, {username} von {householdName}",
+        welcome: "Willkommen",
         login: "Anmelden / Registrieren",
         account: "Konto",
         logout: "Abmelden",
@@ -90,7 +89,7 @@ export const translations = writable({
     },
     pt: {
         home: "Início",
-        welcome: "Bem-vindo, {username} de {householdName}",
+        welcome: "Bem-vindo",
         login: "Entrar / Registrar",
         account: "Conta",
         logout: "Sair",
@@ -117,7 +116,7 @@ export const translations = writable({
     },
     nl: {
         home: "Home",
-        welcome: "Welkom, {username} van {householdName}",
+        welcome: "Welkom",
         login: "Inloggen / Registreren",
         account: "Account",
         logout: "Uitloggen",
@@ -144,6 +143,5 @@ export const translations = writable({
         householdGames: "Toon huishoudspellen",
         moreOptions: "Meer opties",
         hideOptions: "Verberg opties",
-        mode: "Spel modus"
     }
 });

@@ -29,7 +29,7 @@ It dynamically binds the input fields to the `newGame` object, which stores all 
   <h2>Enter Game Details</h2>
   <div class="field">
       <!-- svelte-ignore a11y-label-has-associated-control -->
-      <label>Language:</label>
+      <label>Language owned:</label>
       <select bind:value={newGame.language}>
           {#each $languages as lang}
               <option value={lang.code}>{lang.name}</option>
