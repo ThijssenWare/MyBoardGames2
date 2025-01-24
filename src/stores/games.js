@@ -1,44 +1,61 @@
 // src/stores/games.js
 import { writable } from "svelte/store";
-import { games as mockGames } from "../data/mockGames.js";
+import { mockCRUDAPI } from "../utils/mock_CRUD_API.js"; // Import the centralized CRUD API
 
 /**
  * games.js
  *
  * Description:
- * This store manages the global list of games. It includes fields to store detailed game data and provides methods
- * to manipulate the game list. This setup is ready to be connected to a backend with minimal changes.
- *
- * For Backend Integration:
- * - Replace the initial value (`mockGames`) with data fetched from a backend.
- * - Add `fetchGames` and `saveGame` functions to handle API requests.
+ * This store manages the global list of games using the centralized mockCRUDAPI.
+ * It supports fetching, adding, updating, and deleting games.
  */
 
-export const games = writable(mockGames);
+export const games = writable([]); // Initialize with an empty array
 
 
-// Debugging: Log the initial state
-games.subscribe(($games) => {
-  console.log("games store initialized:", $games); // Check for correct data structure
-});
+// Fetch games from the API and populate the store
+export const fetchGames = async () => {
+  try {
+    const fetchedGames = await mockCRUDAPI.fetchGames();
+    games.set(fetchedGames);
+  } catch (error) {
+    console.error("Failed to fetch games:", error);
+  }
+};
 
-/**
- * For Backend:
- * Add functions like the following:
- *
- * async function fetchGames() {
- *   const response = await fetch("BACKEND_URL/games");
- *   const data = await response.json();
- *   games.set(data);
- * }
- *
- * async function saveGame(newGame) {
- *   const response = await fetch("BACKEND_URL/games", {
- *     method: "POST",
- *     headers: { "Content-Type": "application/json" },
- *     body: JSON.stringify(newGame),
- *   });
- *   const data = await response.json();
- *   games.update((current) => [...current, data]);
- * }
- */
+// Add a new game
+export const addGame = async (game) => {
+  try {
+    const newGame = await mockCRUDAPI.addGame(game);
+    games.update((currentGames) => [...currentGames, newGame]); // Add to the store
+  } catch (error) {
+    console.error("Failed to add game:", error);
+  }
+};
+
+// Update an existing game
+export const updateGame = async (gameId, updatedData) => {
+  try {
+    const updatedGame = await mockCRUDAPI.updateGame(gameId, updatedData);
+    games.update((currentGames) =>
+      currentGames.map((game) => (game.id === gameId ? updatedGame : game))
+    ); // Update in the store
+  } catch (error) {
+    console.error("Failed to update game:", error);
+  }
+};
+
+// Delete a game
+export const deleteGame = async (gameId) => {
+  try {
+    await mockCRUDAPI.deleteGame(gameId);
+    games.update((currentGames) =>
+      currentGames.filter((game) => game.id !== gameId)
+    ); // Remove from the store
+  } catch (error) {
+    console.error("Failed to delete game:", error);
+  }
+};
+
+// Fetch games initially when the app loads
+fetchGames();

@@ -24,7 +24,7 @@ This file defines a Svelte store to manage the global authentication state (logg
 // In stores/auth.js
 import { writable } from 'svelte/store';
 
-// Load user data from localStorage if available
+// Load user data from localStorage if available (THIS IS NOT SAFE, CHANGE LATER!)
 const storedUser = localStorage.getItem('user');
 const storedLoggedIn = localStorage.getItem('loggedIn') === 'true';
 

@@ -1,6 +1,6 @@
 <script>
     import { user, loggedIn } from "../stores/auth";
-    import { login, register } from "../mockApi";
+    import api from "../utils/mock_Auth_API"; // Centralized API
     import { translations } from "../stores/translations";
     import { selectedLanguage } from "../stores/languages";
     import { createEventDispatcher } from "svelte";
@@ -25,7 +25,7 @@
     $: currentLang = get(selectedLanguage).code;
   
     const logIn = async () => {
-      const response = await login(email, password);
+      const response = await api.auth.login(email, password); // Centralized API call
       if (response.success) {
         loggedIn.set(true);
         user.set(response.user);
@@ -38,7 +38,7 @@
     };
   
     const registerUser = async () => {
-      const response = await register(registerUsername, registerEmail, registerPassword);
+      const response = await api.auth.register(registerUsername, registerEmail, registerPassword); // Centralized API call
       if (response.success) {
         loggedIn.set(true);
         user.set(response.user);
@@ -64,24 +64,9 @@
   
     <h2>{t("register")}</h2>
     <form on:submit|preventDefault={registerUser}>
-      <input
-        type="text"
-        placeholder={t("name")}
-        bind:value={registerUsername}
-        required
-      />
-      <input
-        type="email"
-        placeholder={t("email")}
-        bind:value={registerEmail}
-        required
-      />
-      <input
-        type="password"
-        placeholder={t("password")}
-        bind:value={registerPassword}
-        required
-      />
+      <input type="text" placeholder={t("name")} bind:value={registerUsername} required />
+      <input type="email" placeholder={t("email")} bind:value={registerEmail} required />
+      <input type="password" placeholder={t("password")} bind:value={registerPassword} required />
       <button type="submit">{t("register")}</button>
       {#if registerError}
         <p class="error-message">{registerError}</p>

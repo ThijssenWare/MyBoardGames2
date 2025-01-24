@@ -1,7 +1,7 @@
 <script>
   import "../styles/AddGame_Style.css"; // Import the styles
   import Header from "../components/Header.svelte";
-  import { games } from "../stores/games.js";
+  import { addGame } from "../stores/games.js"; // Import the addGame function
   import GameSearch from "../components/AddGame_GameSearch.svelte";
   import GameDetails from "../components/AddGame_GameDetails.svelte";
   import GamePreview from "../components/AddGame_GamePreview.svelte";
@@ -18,19 +18,17 @@
     console.log("Form reset:", newGame);
   };
 
-  const saveGame = () => {
-    console.log("Saving game:", newGame);
-    games.update((current) => {
-        console.log("Current games before update:", current);
-        const updatedGames = [...current, { ...newGame, id: Date.now().toString() }];
-        console.log("Updated games:", updatedGames);
-        return updatedGames;
-    });
-    showConfirmation = true; // Show confirmation popup
-    setTimeout(() => (showConfirmation = false), 2000); // Hide popup after 2 seconds
-    resetForm();
-};
-
+  const saveGame = async () => {
+    try {
+      console.log("Saving game:", newGame);
+      await addGame(newGame); // Use the store's addGame function
+      showConfirmation = true; // Show confirmation popup
+      setTimeout(() => (showConfirmation = false), 2000); // Hide popup after 2 seconds
+      resetForm();
+    } catch (error) {
+      console.error("Failed to save game:", error);
+    }
+  };
 
   $: console.log("Current step:", step);
   $: console.log("Current game data:", newGame);
@@ -63,7 +61,3 @@
   <img src="/assets/PowerBGG.jpeg" alt="Powered by BGG" />
 </div>
 
-<!-- Log -->
-<div class="log">
-  <p>Check the console for detailed logs.</p>
-</div>

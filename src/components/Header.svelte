@@ -3,7 +3,6 @@
     import { navigate } from "../stores/routes";
     import { user, loggedIn } from "../stores/auth";
     import { filters } from "../stores/filters";
-    import { get } from "svelte/store";
     import { languages, selectedLanguage } from "../stores/languages";
     import { translations } from "../stores/translations";
     import LoginRegister from "./LoginRegister.svelte";
