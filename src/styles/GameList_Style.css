@@ -28,19 +28,29 @@
     /* Add Game Button */
     .add-game-button {
       margin-left: auto;
-      padding: 0.5rem;
-      background-color: #ffd700;
+      padding: 0.8rem 1rem; /* Larger padding for a more balanced look */
+      background-color: #ffd700; /* Golden color */
       border: none;
-      border-radius: 50%;
-      font-size: 1.2rem;
+      border-radius: 25px; /* Pill-shaped button */
+      font-size: 0.8rem; /* Larger font for better readability */
+      font-weight: bold; /* Make the text bold for emphasis */
+      color: #333; /* Contrasting text color */
       cursor: pointer;
-      transition: background-color 0.2s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+      transition: background-color 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
     }
+    
   
     .add-game-button:hover {
-      background-color: #ffcc00;
+      background-color: #ffc107; /* Slightly darker gold on hover */
+      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
     }
   
+    .add-game-button:active {
+      background-color: #e6b800; /* Even darker gold when active */
+      box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2); /* Smaller shadow to simulate button press */
+    }
+
     /* Games List */
     .games-list {
       display: flex;

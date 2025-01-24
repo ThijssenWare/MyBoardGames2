@@ -1,13 +1,13 @@
 <script>
     import { user, loggedIn } from "../stores/auth";
     import { login, register } from "../mockApi";
+    import { translations } from "../stores/translations";
+    import { selectedLanguage } from "../stores/languages";
     import { createEventDispatcher } from "svelte";
-
-const dispatch = createEventDispatcher();
-
-
-    export let username = "";
-
+    import { get } from "svelte/store";
+  
+    const dispatch = createEventDispatcher();
+  
     let email = "";
     let password = "";
     let loginError = "";
@@ -15,55 +15,77 @@ const dispatch = createEventDispatcher();
     let registerEmail = "";
     let registerPassword = "";
     let registerError = "";
-
+  
+    let currentLang = get(selectedLanguage).code;
+  
+    // Reactive translation function
+    const t = (key) => get(translations)[currentLang]?.[key] || key;
+  
+    // Subscribe to language changes
+    $: currentLang = get(selectedLanguage).code;
+  
     const logIn = async () => {
-    const response = await login(email, password);
-    if (response.success) {
+      const response = await login(email, password);
+      if (response.success) {
         loggedIn.set(true);
-        user.set(response.user);  // Set the user details in the store
+        user.set(response.user);
         loginError = "";
-        dispatch('loginSuccess');
-    } else {
+        dispatch("loginSuccess");
+      } else {
         loggedIn.set(false);
         loginError = response.error;
-    }
-};
-
-const registerUser = async () => {
-    const response = await register(registerUsername, registerEmail, registerPassword);
-    if (response.success) {
+      }
+    };
+  
+    const registerUser = async () => {
+      const response = await register(registerUsername, registerEmail, registerPassword);
+      if (response.success) {
         loggedIn.set(true);
-        user.set(response.user);  // Ensure that the user store is updated with the new user
+        user.set(response.user);
         registerError = "";
-        // Emit registration success
-        dispatch('registerSuccess');
-    } else {
+        dispatch("registerSuccess");
+      } else {
         loggedIn.set(false);
         registerError = response.error;
-    }
-};
-
-</script>
-
-<div class="login-register">
-    <h2>Login</h2>
+      }
+    };
+  </script>
+  
+  <div class="login-register">
+    <h2>{t("logIn")}</h2>
     <form on:submit|preventDefault={logIn}>
-        <input type="email" placeholder="Email" bind:value={email} required />
-        <input type="password" placeholder="Password" bind:value={password} required />
-        <button type="submit">Log In</button>
-        {#if loginError}
-            <p class="error-message">{loginError}</p>
-        {/if}
+      <input type="email" placeholder={t("email")} bind:value={email} required />
+      <input type="password" placeholder={t("password")} bind:value={password} required />
+      <button type="submit">{t("logIn")}</button>
+      {#if loginError}
+        <p class="error-message">{loginError}</p>
+      {/if}
     </form>
-
-    <h2>Register</h2>
+  
+    <h2>{t("register")}</h2>
     <form on:submit|preventDefault={registerUser}>
-        <input type="text" placeholder="Username" bind:value={registerUsername} required />
-        <input type="email" placeholder="Email" bind:value={registerEmail} required />
-        <input type="password" placeholder="Password" bind:value={registerPassword} required />
-        <button type="submit">Register</button>
-        {#if registerError}
-            <p class="error-message">{registerError}</p>
-        {/if}
+      <input
+        type="text"
+        placeholder={t("name")}
+        bind:value={registerUsername}
+        required
+      />
+      <input
+        type="email"
+        placeholder={t("email")}
+        bind:value={registerEmail}
+        required
+      />
+      <input
+        type="password"
+        placeholder={t("password")}
+        bind:value={registerPassword}
+        required
+      />
+      <button type="submit">{t("register")}</button>
+      {#if registerError}
+        <p class="error-message">{registerError}</p>
+      {/if}
     </form>
-</div>
+  </div>
+  

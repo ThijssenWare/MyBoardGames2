@@ -9,7 +9,7 @@
 
 export const games = [
   {
-    id: "0",
+    id: "13",
     name: "Catan",
     language: "English",
     personalRating: "8.5",
@@ -34,7 +34,7 @@ export const games = [
     popByBGG: false,
   },
   {
-    id: "1",
+    id: "30549",
     name: "Pandemic",
     language: "English",
     personalRating: "9.2",
@@ -59,7 +59,7 @@ export const games = [
     popByBGG: false,
   },
   {
-    id: "2",
+    id: "9209",
     name: "Ticket to Ride",
     language: "Dutch",
     personalRating: "8.7",
@@ -84,7 +84,7 @@ export const games = [
     popByBGG: false,
   },
   {
-    id: "3",
+    id: "822",
     name: "Carcassonne",
     language: "English",
     personalRating: "8.0",
@@ -109,7 +109,7 @@ export const games = [
     popByBGG: false,
   },
   {
-    id: "4",
+    id: "68448",
     name: "7 Wonders",
     language: "English",
     personalRating: "8.9",
@@ -134,7 +134,7 @@ export const games = [
     popByBGG: false,
   },
   {
-    id: "5",
+    id: "230802",
     name: "Azul",
     language: "English",
     personalRating: "8.6",
@@ -159,7 +159,7 @@ export const games = [
     popByBGG: false,
   },
   {
-    id: "6",
+    id: "167791",
     name: "Terraforming Mars",
     language: "English",
     personalRating: "9.0",
@@ -184,7 +184,7 @@ export const games = [
     popByBGG: false,
   },
   {
-    id: "7",
+    id: "174430",
     name: "Gloomhaven",
     language: "English",
     personalRating: "9.5",
@@ -209,7 +209,7 @@ export const games = [
     popByBGG: false,
   },
   {
-    id: "8",
+    id: "178900",
     name: "Codenames",
     language: "English",
     personalRating: "8.3",
@@ -234,7 +234,7 @@ export const games = [
     popByBGG: false,
   },
   {
-    id: "9",
+    id: "36218",
     name: "Dominion",
     language: "English",
     personalRating: "8.8",
@@ -259,7 +259,7 @@ export const games = [
     popByBGG: false,
   },
   {
-    id: "10",
+    id: "148228",
     name: "Splendor",
     language: "English",
     personalRating: "8.4",
@@ -284,7 +284,7 @@ export const games = [
     popByBGG: false,
   },
   {
-    id: "11",
+    id: "204583",
     name: "Kingdomino",
     language: "English",
     personalRating: "7.9",
