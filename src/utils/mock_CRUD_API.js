@@ -20,12 +20,24 @@ export const mockCRUDAPI = {
   // Add a new game
   async addGame(game) {
     await delay(500); // Simulate API latency
+
+    // Check for duplicate by name and publisher
+    const duplicate = gamesDB.some(
+      (existingGame) =>
+        existingGame.name.toLowerCase() === game.name.toLowerCase() &&
+        existingGame.publisher?.toLowerCase() === game.publisher?.toLowerCase()
+    );
+
+    if (duplicate) {
+      throw new Error("Game already exists in the database");
+    }
+
     const newGame = { ...game, id: Date.now().toString() }; // Generate unique ID
     gamesDB.push(newGame);
     return newGame; // Return the newly created game
   },
 
-  // Update an existing game by ID <<<<<<<<<<<<<<<<<NOT YET IMPLEMENTED>>>>>>>>>>>>>>>>>>>
+  // Update an existing game by ID
   async updateGame(gameId, updatedData) {
     await delay(500); // Simulate API latency
     const index = gamesDB.findIndex((game) => game.id === gameId);
@@ -34,7 +46,7 @@ export const mockCRUDAPI = {
     return gamesDB[index]; // Return the updated game
   },
 
-  // Delete a game by ID <<<<<<<<<<<<<<<<<NOT YET IMPLEMENTED>>>>>>>>>>>>>>>>>>>
+  // Delete a game by ID
   async deleteGame(gameId) {
     await delay(500); // Simulate API latency
     const index = gamesDB.findIndex((game) => game.id === gameId);

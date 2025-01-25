@@ -15,12 +15,10 @@
     newGame = {};
     selectedFromBGG = false;
     step = 1;
-    console.log("Form reset:", newGame);
   };
 
   const saveGame = async () => {
     try {
-      console.log("Saving game:", newGame);
       await addGame(newGame); // Use the store's addGame function
       showConfirmation = true; // Show confirmation popup
       setTimeout(() => (showConfirmation = false), 2000); // Hide popup after 2 seconds
@@ -30,8 +28,7 @@
     }
   };
 
-  $: console.log("Current step:", step);
-  $: console.log("Current game data:", newGame);
+
 </script>
 
 <Header /> <!-- Ensure Header is at the top -->

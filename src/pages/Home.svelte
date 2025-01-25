@@ -42,8 +42,7 @@ This page serves as the homepage and displays the list of games with filters and
   $: filters.set(localFilters);
 
   // Log the current filters and games to debug
-  $: console.log("Filters in Home:", localFilters);
-  $: console.log("Games in Home:", $games);
+
 </script>
 
 <Header {loggedIn} />

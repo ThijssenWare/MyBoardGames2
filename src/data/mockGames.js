@@ -287,15 +287,15 @@ export const games = [
     id: "204583",
     name: "Kingdomino",
     language: "English",
-    personalRating: "7.9",
-    lastPlayed: "2023-11-27",
+    personalRating: "7.9", //refactor to userGames + include a global rating!
+    lastPlayed: "2023-11-27", //refactor to userGames
     minPlayers: "2",
     maxPlayers: "4",
     bggUrl: "https://boardgamegeek.com/boardgame/175183/kingdomino",
     imageUrl: "https://cf.geekdo-images.com/c0m3gwZTcfKoLI63ASio8g__imagepagezoom/img/A3lbK-JopRXjBAstrZF2JE2RADo=/fit-in/1200x900/filters:no_upscale():strip_icc()/pic8443569.png",
     mode: "competitive",
     description: "A game of dominoes where you build your kingdom.",
-    dutchDescription: "Een domino spel waarin je je koninkrijk bouwt.",
+    dutchDescription: "Een domino spel waarin je je koninkrijk bouwt.", //refactor to userGames
     categories: ["Worker Placement", "Family", "For Children"],
     designer: "Bruno Cathala",
     artist: "Cyrille Daujean",
