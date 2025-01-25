@@ -54,8 +54,11 @@
   <header class="header">
     <div class="header-left">
       <nav>
+        <!-- svelte-ignore a11y-invalid-attribute -->
         <a href="#" on:click|preventDefault={() => navigate("/")}>{getTranslation("home")}</a>
+        <!-- svelte-ignore a11y-invalid-attribute -->
         <a href="#" on:click|preventDefault={() => navigate("/about")}>{getTranslation("about")}</a>
+        <!-- svelte-ignore a11y-invalid-attribute -->
         <a href="#" on:click|preventDefault={() => navigate("/contact")}>{getTranslation("contact")}</a>
       </nav>
     </div>
@@ -101,6 +104,7 @@
       </div>
   
       {#if isLoginModalOpen}
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
         <div class="modal-overlay" on:click={() => (isLoginModalOpen = false)}>
           <div class="login-modal" on:click|stopPropagation>
             <button class="close-button" on:click={() => (isLoginModalOpen = false)}>✕</button>

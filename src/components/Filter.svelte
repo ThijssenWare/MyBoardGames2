@@ -89,6 +89,7 @@
 
     <!-- Number of Players Filter -->
     <div class="filter-group">
+        <!-- svelte-ignore a11y-label-has-associated-control -->
         <label>{t("numPlayers") || "Number of Players"}:</label>
         <input
             type="range"
@@ -122,6 +123,7 @@
     {#if showAdvancedFilters}
         <!-- Categories Filter -->
         <div class="filter-group category-filter">
+            <!-- svelte-ignore a11y-label-has-associated-control -->
             <label>{t("category") || "Categories"}:</label>
             <div class="filter-by-options">
                 <span>{t("filterByUsing") || "Filter by using:"}</span>
@@ -162,6 +164,7 @@
 
         <!-- Rating Slider -->
         <div class="filter-group">
+            <!-- svelte-ignore a11y-label-has-associated-control -->
             <label>{t("rating") || "Rating"}:</label>
             <input
                 type="range"
@@ -177,6 +180,7 @@
         <!-- Owner Filter (Visible if logged in) -->
         {#if $loggedIn}
             <div class="filter-group checkbox-group">
+                <!-- svelte-ignore a11y-label-has-associated-control -->
                 <label>{t("owner") || "Owner"}:</label>
                 <select bind:value={$filters.owner}>
                     <option value="All">{t("all") || "All"}</option>

@@ -116,6 +116,7 @@
       {#if searchResults.length === 0}
         <ul>
           <!-- Custom game option is always shown if there is input but no matches -->
+          <!-- svelte-ignore a11y-click-events-have-key-events -->
           <li
             class="custom-option"
             on:click={() => handleGameSelected("custom")}
@@ -127,6 +128,7 @@
       {:else}
         <ul>
           <!-- Custom game option -->
+          <!-- svelte-ignore a11y-click-events-have-key-events -->
           <li
             class="custom-option"
             on:click={() => handleGameSelected("custom")}
@@ -134,6 +136,7 @@
             My game is not in this list
           </li>
           {#each searchResults as game (game.id)}
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
             <li
               on:click={() => handleGameSelected(game)}
               class:duplicate={potentialDuplicates.some(

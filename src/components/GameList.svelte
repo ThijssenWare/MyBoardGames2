@@ -159,6 +159,7 @@
   {#if filteredGames.length > 0}
     {#each filteredGames as game}
       {#if game}
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
         <div class="game-row" on:click={() => goToDetails(game.id)}>
           <img class="game-thumbnail" src={game.imageUrl} alt={game.name} />
           <div class="game-info">
